@@ -1,27 +1,28 @@
 import { useState } from "react";
-import api from "../api/axios.js";
+import { login } from "../api/auth.js";
 
-function Login() {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await api.post("/auth/login", { email, password });
+    setError(null);
 
-      localStorage.setItem("token", response.data.token);
-      console.log("Logged in successfully: ", response.data);
+    try {
+      const data = await login({ email, password });
+      console.log("Logged in successfully: ", data);
+      alert(`Welcome: ${data.email}`);
     } catch (err) {
-      setError(err.response?.data?.error || "Login failed");
+      setError(err.error || "Login failed");
     }
   };
 
   return (
-    <form onSubmit={handleLogin}>
+    <form onSubmit={handleSubmit}>
       <input
-        placeholder="email"
+        placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
@@ -31,8 +32,8 @@ function Login() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
+      <button type="submit">Login</button>
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </form>
   );
 }
-
-export default Login;

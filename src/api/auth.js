@@ -1,6 +1,6 @@
 import api from "./axios.js";
 
-export const login = async (email, password) => {
+export const login = async ({ email, password }) => {
   try {
     const response = await api.post("/auth/login", { email, password });
     localStorage.setItem("token", response.data.token);
