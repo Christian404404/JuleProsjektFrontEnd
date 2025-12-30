@@ -10,20 +10,11 @@ export const login = async ({ email, password }) => {
   }
 };
 
-export const register = async (email, password) => {
+export const register = async ({ email, password }) => {
   try {
     const response = await api.post("/auth/register", { email, password });
     return response.data;
   } catch (error) {
     throw error.response?.data || { error: "Registration failed" };
-  }
-};
-
-export const getProfile = async () => {
-  try {
-    const response = await api.get("/users/profile");
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || { error: "Fetching profile failed" };
   }
 };
