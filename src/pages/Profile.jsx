@@ -1,21 +1,19 @@
-import { useQuery } from "@tanstack/react-query";
-import { getProfile } from "../api/auth.js";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { fetchProfile } from "../api/user.js";
 import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["profile"],
-    queryFn: getProfile,
-    onError: () => {
-      localStorage.removeItem("token");
-      navigate("/login");
-    },
+  const { data: user } = useQuery({
+    queryKey: ["me"],
+    queryFn: fetchProfile,
   });
 
   const logout = () => {
     localStorage.removeItem("token");
+    queryClient.clear();
     navigate("/login");
   };
 
@@ -25,7 +23,7 @@ export default function Profile() {
   return (
     <>
       <h2>Profile</h2>
-      <p>Email: {data.user.email}</p>
+      <p>Email: {user.email}</p>
       <button onClick={logout}>Logout</button>
     </>
   );
