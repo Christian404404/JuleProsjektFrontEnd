@@ -1,48 +1,32 @@
-import { use, useEffect, useState } from "react";
-import api from "../api/axios.js";
+import { useQuery } from "@tanstack/react-query";
+import { getProfile } from "../api/auth.js";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await api.get("/user/profile");
-        setUser(response.data.user);
-      } catch (err) {
-        if (err.response?.status === 401) {
-          setError("You are not authorized. Please log in.");
-        } else {
-          setError("Failed to load profile.");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getProfile,
+    onError: () => {
+      localStorage.removeItem("token");
+      navigate("/login");
+    },
+  });
 
-    fetchProfile();
-  }, []);
+  const logout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
 
-  if (loading) {
-    return <p>Loading profile...</p>;
-  }
+  if (isLoading) return <p>Loading profile ≽^•⩊•^≼</p>;
+  if (isError) return <p>Session expired: Please log in again.</p>;
 
-  if (error) {
-    return <p style={{ color: "red" }}>{error}</p>;
-  }
   return (
     <>
       <h2>Profile</h2>
-      <p>
-        <strong>User ID:</strong>
-        {user.id}
-      </p>
-      <p>
-        <strong>Email:</strong>
-        {user.email}
-      </p>
+      <p>Email: {data.user.email}</p>
+      <button onClick={logout}>Logout</button>
     </>
   );
 }
