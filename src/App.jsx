@@ -1,30 +1,6 @@
-import { Routes, Route } from "react-router-dom";
-
-import Login from "./pages/Login.jsx";
-import Register from "./pages/Register.jsx";
-import Profile from "./pages/Profile.jsx";
-import ProtectedRoute from "./routes/ProtectedRoute.jsx";
-
+import AppRoutes from "./routes/routes";
 import "./App.css";
 
-function App() {
-  return (
-    <>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </>
-  );
+export default function App() {
+  return <AppRoutes />;
 }
-
-export default App;

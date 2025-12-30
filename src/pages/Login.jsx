@@ -11,7 +11,7 @@ export default function Login() {
     setError(null);
 
     try {
-      const data = await login(email, password);
+      const data = await login({ email, password });
       console.log("Logged in successfully: ", data);
       alert(`Welcome: ${data.email}`);
     } catch (err) {

@@ -1,15 +1,11 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchProfile } from "../api/user.js";
+import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth.js";
 
 export default function Profile() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-
-  const { data: user } = useQuery({
-    queryKey: ["me"],
-    queryFn: fetchProfile,
-  });
+  const { user, isLoading, isError } = useAuth();
 
   const logout = () => {
     localStorage.removeItem("token");

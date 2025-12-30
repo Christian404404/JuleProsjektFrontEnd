@@ -16,7 +16,7 @@ export default function Register() {
       const data = await register({ email, password });
       setMessage(data.message || "Registration successful");
     } catch (err) {
-      setMessage(err.error || "Registration failed");
+      setError(err.error || "Registration failed");
     }
   };
 
