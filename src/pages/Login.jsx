@@ -1,22 +1,16 @@
 import { useState } from "react";
-import { login } from "../api/auth.js";
+import { useAuthMutation } from "../hooks/useAuthMutation.js";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
 
-  const handleSubmit = async (e) => {
+  const { loginMutation } = useAuthMutation();
+  const { mutate, isLoading, error } = loginMutation;
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setError(null);
-
-    try {
-      const data = await login({ email, password });
-      console.log("Logged in successfully: ", data);
-      alert(`Welcome: ${data.email}`);
-    } catch (err) {
-      setError(err.error || "Login failed");
-    }
+    mutate({ email, password });
   };
 
   return (
@@ -32,8 +26,12 @@ export default function Login() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button type="submit">Login</button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? "Logging in >⩊<" : "Login"}
+      </button>
+      {error && (
+        <p style={{ color: "red" }}>{error.error || "Login failed ^. .^₎⟆"}</p>
+      )}
     </form>
   );
 }
