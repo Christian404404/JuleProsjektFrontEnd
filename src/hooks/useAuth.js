@@ -25,7 +25,7 @@ export function useAuth() {
   };
 
   return {
-    user: data,
+    user: data?.user,
     isLoading,
     isError,
     error,

@@ -1,10 +1,14 @@
 import { useAuth } from "../hooks/useAuth.js";
 
 export default function Profile() {
-  const { user, isLoading, isError, logout } = useAuth();
+  const { user, isLoading, logout } = useAuth();
 
-  if (isLoading) return <p>Loading profile ≽^•⩊•^≼</p>;
-  if (isError) return <p>Session expired: Please log in again.</p>;
+  if (isLoading) {
+    return <p>Loading profile ≽^•⩊•^≼</p>;
+  }
+  if (!user) {
+    return null;
+  }
 
   return (
     <>
