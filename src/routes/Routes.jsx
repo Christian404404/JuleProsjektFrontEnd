@@ -20,6 +20,7 @@ export default function AppRoutes() {
       {/* Protected routes */}
       <Route element={<ProtectedRoute />}>
         <Route path="/profile" element={<Profile />} />
+        {/* Future protected routes goes here */}
       </Route>
       {/* 404 route */}
       <Route path="*" element={<NotFound />} />
