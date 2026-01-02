@@ -19,18 +19,20 @@ export default function Register() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Email"
+        required
       />
       <input
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
+        required
       />
       <button type="submit" disabled={isLoading}>
         {isLoading ? "Registering >⩊<" : "Register"}
       </button>
 
-      {data && (
+      {data?.message && (
         <p style={{ color: "green" }}>
           {data.message || "Registration successful ≽^• ˕ • ྀི≼"}
         </p>
